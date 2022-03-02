@@ -10,12 +10,10 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Data
+@Data@Table(name = "JOGADOR")
 public class Jogador {
 
-    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,8 +29,4 @@ public class Jogador {
 
     @Enumerated(EnumType.STRING)
     private StatusOcupacional statusOcupacional;
-
-    @OneToMany(mappedBy = "jogadores", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<Time> time ;
-
 }

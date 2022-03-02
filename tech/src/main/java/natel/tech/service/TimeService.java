@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,19 +38,25 @@ public class TimeService {
         return time.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Id Não encontrado"));
     }
 
-
    public void inserir(Long idJogador, Long idTime) {
         Jogador jogador = jogadorService.findById(idJogador);
         Optional<Time> time = repository.findById(idTime);
 
         Time t = time.get();
-        t.setJogadores(jogador);;
-        repository.save(t);
 
+       List<Jogador> jogadores;
+       if(t.getJogadores().isEmpty()) {
+            jogadores = new ArrayList<>();
+        } else {
+           jogadores = t.getJogadores();
+       }
+
+        jogadores.add(jogador);
+
+        t.setJogadores(jogadores);
+        repository.save(t);
     }
 
-   /* public List<Time> findTimeCompleto() {
-        return repository.findTimeCompleto();*/
 }
 
 
